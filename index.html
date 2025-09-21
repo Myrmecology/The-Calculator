@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Neon Cyberpunk Calculator - A futuristic calculator with stunning visual effects">
+    <meta name="theme-color" content="#0a0a0a">
+    
+    <title>Cyberpunk Calculator</title>
+    
+    <!-- Preload critical resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <!-- CSS imports in order of importance -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/neon-effects.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+    <div class="background-grid"></div>
+    
+    <main class="calculator-container">
+        <div class="calculator" role="application" aria-label="Cyberpunk Calculator">
+            <!-- Display Screen -->
+            <div class="display-container">
+                <div class="display" id="display" aria-live="polite">
+                    <div class="display-text" id="displayText">0</div>
+                    <div class="display-equation" id="displayEquation"></div>
+                </div>
+                <div class="scanlines"></div>
+            </div>
+            
+            <!-- Calculator Buttons -->
+            <div class="button-grid">
+                <!-- Row 1: Clear and operators -->
+                <button class="btn btn-clear" data-action="clear" aria-label="Clear">C</button>
+                <button class="btn btn-operator" data-action="plusminus" aria-label="Plus minus">±</button>
+                <button class="btn btn-operator" data-action="percent" aria-label="Percent">%</button>
+                <button class="btn btn-operator" data-action="divide" aria-label="Divide">÷</button>
+                
+                <!-- Row 2: Numbers 7-9 and multiply -->
+                <button class="btn btn-number" data-number="7" aria-label="Seven">7</button>
+                <button class="btn btn-number" data-number="8" aria-label="Eight">8</button>
+                <button class="btn btn-number" data-number="9" aria-label="Nine">9</button>
+                <button class="btn btn-operator" data-action="multiply" aria-label="Multiply">×</button>
+                
+                <!-- Row 3: Numbers 4-6 and subtract -->
+                <button class="btn btn-number" data-number="4" aria-label="Four">4</button>
+                <button class="btn btn-number" data-number="5" aria-label="Five">5</button>
+                <button class="btn btn-number" data-number="6" aria-label="Six">6</button>
+                <button class="btn btn-operator" data-action="subtract" aria-label="Subtract">−</button>
+                
+                <!-- Row 4: Numbers 1-3 and add -->
+                <button class="btn btn-number" data-number="1" aria-label="One">1</button>
+                <button class="btn btn-number" data-number="2" aria-label="Two">2</button>
+                <button class="btn btn-number" data-number="3" aria-label="Three">3</button>
+                <button class="btn btn-operator" data-action="add" aria-label="Add">+</button>
+                
+                <!-- Row 5: Zero, decimal, equals -->
+                <button class="btn btn-number btn-zero" data-number="0" aria-label="Zero">0</button>
+                <button class="btn btn-number" data-action="decimal" aria-label="Decimal">.</button>
+                <button class="btn btn-equals" data-action="equals" aria-label="Equals">=</button>
+            </div>
+        </div>
+        
+        <!-- Easter Egg Display -->
+        <div class="easter-egg-container" id="easterEggContainer">
+            <div class="easter-egg-message" id="easterEggMessage"></div>
+        </div>
+        
+        <!-- Particle System -->
+        <div class="particles-container" id="particlesContainer"></div>
+    </main>
+    
+    <!-- JavaScript modules -->
+    <script src="js/audio.js"></script>
+    <script src="js/effects.js"></script>
+    <script src="js/easter-eggs.js"></script>
+    <script src="js/calculator.js"></script>
+</body>
+</html>
