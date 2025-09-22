@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rust Calculator</title>
+    <style>
+        /* Minimal Rust-inspired styling */
+        body {
+            font-family: 'Courier New', monospace;
+            background: #1e1e1e;
+            color: #dcdcdc;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .title {
+            color: #ce422b;
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #888;
+            font-size: 1rem;
+        }
+        
+        .calculator {
+            background: #2d2d2d;
+            border: 2px solid #ce422b;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+        
+        .display {
+            background: #1e1e1e;
+            border: 1px solid #555;
+            padding: 15px;
+            margin-bottom: 15px;
+            text-align: right;
+            font-size: 1.5rem;
+            color: #ce422b;
+            border-radius: 4px;
+        }
+        
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+        }
+        
+        .btn {
+            background: #404040;
+            border: 1px solid #666;
+            color: #dcdcdc;
+            padding: 15px;
+            font-size: 1rem;
+            font-family: inherit;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+        
+        .btn:hover {
+            background: #505050;
+            border-color: #ce422b;
+        }
+        
+        .btn:active {
+            background: #ce422b;
+            color: white;
+        }
+        
+        .btn-operator {
+            background: #ce422b;
+            color: white;
+        }
+        
+        .btn-operator:hover {
+            background: #a0321f;
+        }
+        
+        .back-link {
+            margin-top: 20px;
+            color: #ce422b;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .back-link:hover {
+            color: #ff6b47;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1 class="title">🦀 Rust Calculator</h1>
+        <p class="subtitle">Blazingly fast • Memory safe • Zero-cost abstractions</p>
+    </div>
+    
+    <div class="calculator">
+        <div class="display" id="display">0</div>
+        <div class="buttons">
+            <button class="btn" onclick="clearAll()">C</button>
+            <button class="btn" onclick="clearEntry()">CE</button>
+            <button class="btn btn-operator" onclick="inputOperator('/')">/</button>
+            <button class="btn btn-operator" onclick="inputOperator('*')">*</button>
+            
+            <button class="btn" onclick="inputNumber('7')">7</button>
+            <button class="btn" onclick="inputNumber('8')">8</button>
+            <button class="btn" onclick="inputNumber('9')">9</button>
+            <button class="btn btn-operator" onclick="inputOperator('-')">-</button>
+            
+            <button class="btn" onclick="inputNumber('4')">4</button>
+            <button class="btn" onclick="inputNumber('5')">5</button>
+            <button class="btn" onclick="inputNumber('6')">6</button>
+            <button class="btn btn-operator" onclick="inputOperator('+')">+</button>
+            
+            <button class="btn" onclick="inputNumber('1')">1</button>
+            <button class="btn" onclick="inputNumber('2')">2</button>
+            <button class="btn" onclick="inputNumber('3')">3</button>
+            <button class="btn btn-operator" onclick="calculate()" rowspan="2">=</button>
+            
+            <button class="btn" onclick="inputNumber('0')" style="grid-column: span 2;">0</button>
+            <button class="btn" onclick="inputNumber('.')">.</button>
+        </div>
+    </div>
+    
+    <a href="index.html" class="back-link">← Back to Cyberpunk Calculator</a>
+    
+    <script>
+        // Simple calculator logic (Rust-inspired but in JS)
+        let display = document.getElementById('display');
+        let currentInput = '0';
+        let operator = null;
+        let previousInput = null;
+        
+        function updateDisplay() {
+            display.textContent = currentInput;
+        }
+        
+        function inputNumber(num) {
+            if (currentInput === '0' && num !== '.') {
+                currentInput = num;
+            } else {
+                currentInput += num;
+            }
+            updateDisplay();
+        }
+        
+        function inputOperator(op) {
+            if (operator && previousInput !== null) {
+                calculate();
+            }
+            operator = op;
+            previousInput = currentInput;
+            currentInput = '0';
+        }
+        
+        function calculate() {
+            if (operator && previousInput !== null) {
+                const prev = parseFloat(previousInput);
+                const curr = parseFloat(currentInput);
+                
+                switch (operator) {
+                    case '+': currentInput = (prev + curr).toString(); break;
+                    case '-': currentInput = (prev - curr).toString(); break;
+                    case '*': currentInput = (prev * curr).toString(); break;
+                    case '/': currentInput = curr !== 0 ? (prev / curr).toString() : 'Error'; break;
+                }
+                
+                operator = null;
+                previousInput = null;
+                updateDisplay();
+            }
+        }
+        
+        function clearAll() {
+            currentInput = '0';
+            operator = null;
+            previousInput = null;
+            updateDisplay();
+        }
+        
+        function clearEntry() {
+            currentInput = '0';
+            updateDisplay();
+        }
+    </script>
+</body>
+</html>

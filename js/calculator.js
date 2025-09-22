@@ -116,14 +116,26 @@ class CyberpunkCalculator {
                     this.clear();
                     break;
                 case 'equals':
-                    this.calculate();
-                    // Check for easter eggs on simple numbers (when no operation is pending)
-                    if (!this.state.operation && this.state.currentOperand !== '0') {
-                        setTimeout(() => {
-                            EasterEggs.checkResult(parseFloat(this.state.currentOperand));
-                        }, 100);
-                    }
-                    break;
+    // Handle direct number easter eggs (no operation)  
+    if (!this.state.operation && this.state.currentOperand !== '0') {
+        const currentValue = this.state.currentOperand;
+        
+        // Trigger easter egg
+        EasterEggs.checkResult(parseFloat(currentValue));
+        
+        // Force clear the calculator
+        setTimeout(() => {
+            console.log('Force clearing calculator'); // Debug log
+            this.clear(); // Use the full clear method
+            this.updateDisplay(); // Force display update
+        }, 2500);
+        
+        return; // Don't proceed with calculation
+    }
+    
+    // Normal calculation
+    this.calculate();
+    break;
                 case 'decimal':
                     this.handleNumberInput('.');
                     break;
