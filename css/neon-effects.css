@@ -449,3 +449,79 @@
     0% { transform: translateY(-50%) rotate(0deg); }
     100% { transform: translateY(-50%) rotate(360deg); }
 }
+
+/* ================================
+   ENHANCED BACKGROUND EFFECTS
+   ================================ */
+
+/* Brighter background grid */
+.background-grid {
+    background-image: 
+        linear-gradient(rgba(0, 255, 255, 0.2) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 255, 255, 0.2) 1px, transparent 1px) !important;
+    opacity: 1 !important;
+}
+
+/* Enhanced floating symbols */
+.floating-symbol {
+    color: rgba(0, 255, 255, 0.6) !important;
+    font-size: 3rem !important;
+    text-shadow: 
+        0 0 10px currentColor,
+        0 0 20px currentColor,
+        0 0 30px currentColor !important;
+    font-weight: bold !important;
+}
+
+/* Additional background glow layers */
+.background-grid::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(circle at 25% 25%, rgba(0, 255, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 75% 75%, rgba(255, 0, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(0, 255, 0, 0.05) 0%, transparent 70%);
+    animation: backgroundPulse 8s infinite;
+    pointer-events: none;
+}
+
+/* Background pulse animation */
+@keyframes backgroundPulse {
+    0%, 100% { 
+        opacity: 0.3; 
+        transform: scale(1);
+    }
+    50% { 
+        opacity: 0.8; 
+        transform: scale(1.02);
+    }
+}
+
+/* Scanning line effect */
+.background-scanner {
+    position: fixed;
+    top: -2px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(0, 255, 255, 0.8), 
+        rgba(0, 255, 255, 1),
+        rgba(0, 255, 255, 0.8),
+        transparent
+    );
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+    animation: verticalScan 6s linear infinite;
+    pointer-events: none;
+    z-index: 5;
+}
+
+@keyframes verticalScan {
+    0% { top: -2px; }
+    100% { top: 100vh; }
+}

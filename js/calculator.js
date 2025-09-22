@@ -117,6 +117,12 @@ class CyberpunkCalculator {
                     break;
                 case 'equals':
                     this.calculate();
+                    // Check for easter eggs on simple numbers (when no operation is pending)
+                    if (!this.state.operation && this.state.currentOperand !== '0') {
+                        setTimeout(() => {
+                            EasterEggs.checkResult(parseFloat(this.state.currentOperand));
+                        }, 100);
+                    }
                     break;
                 case 'decimal':
                     this.handleNumberInput('.');
@@ -214,6 +220,12 @@ class CyberpunkCalculator {
     }
     
     calculate() {
+        // Check for easter eggs on simple numbers (when no operation is pending)
+        if (!this.state.operation && this.state.currentOperand !== '0') {
+            // This handles cases where user types a number and presses equals
+            return;
+        }
+        
         if (!this.state.operation || !this.state.previousOperand) {
             return;
         }
@@ -267,7 +279,7 @@ class CyberpunkCalculator {
                 this.state.previousOperand = null;
                 this.state.shouldResetDisplay = true;
                 
-                // Check for easter eggs
+                // Check for easter eggs with the calculated result
                 EasterEggs.checkResult(result);
                 
                 // Visual effects
@@ -297,7 +309,9 @@ class CyberpunkCalculator {
         
         this.updateDisplay();
         this.clearEquationDisplay();
-        this.elements.calculator.classList.remove('rainbow-mode');
+        if (this.elements.calculator) {
+            this.elements.calculator.classList.remove('rainbow-mode');
+        }
         this.addDisplayAnimation('clear');
     }
     
