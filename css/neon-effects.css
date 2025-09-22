@@ -1,0 +1,451 @@
+/* ================================
+   CYBERPUNK CALCULATOR - NEON EFFECTS
+   Advanced CSS animations and glow effects
+   ================================ */
+
+/* ================================
+   NEON GLOW KEYFRAMES
+   ================================ */
+
+@keyframes neonFlicker {
+    0%, 100% { opacity: 1; }
+    2% { opacity: 0.8; }
+    4% { opacity: 1; }
+    8% { opacity: 0.8; }
+    10% { opacity: 1; }
+    12% { opacity: 0.8; }
+    14% { opacity: 1; }
+    16% { opacity: 0.7; }
+    18% { opacity: 1; }
+    22% { opacity: 0.9; }
+    25% { opacity: 1; }
+}
+
+@keyframes neonPulse {
+    0%, 100% {
+        box-shadow: 
+            0 0 5px currentColor,
+            0 0 10px currentColor,
+            0 0 15px currentColor,
+            0 0 20px currentColor;
+    }
+    50% {
+        box-shadow: 
+            0 0 2px currentColor,
+            0 0 5px currentColor,
+            0 0 8px currentColor,
+            0 0 12px currentColor;
+    }
+}
+
+@keyframes borderGlow {
+    0%, 100% {
+        border-color: var(--neon-blue);
+        box-shadow: 
+            0 0 20px var(--neon-blue),
+            inset 0 0 20px rgba(0, 255, 255, 0.1);
+    }
+    25% {
+        border-color: var(--neon-pink);
+        box-shadow: 
+            0 0 20px var(--neon-pink),
+            inset 0 0 20px rgba(255, 0, 255, 0.1);
+    }
+    50% {
+        border-color: var(--neon-green);
+        box-shadow: 
+            0 0 20px var(--neon-green),
+            inset 0 0 20px rgba(0, 255, 0, 0.1);
+    }
+    75% {
+        border-color: var(--neon-purple);
+        box-shadow: 
+            0 0 20px var(--neon-purple),
+            inset 0 0 20px rgba(138, 43, 226, 0.1);
+    }
+}
+
+@keyframes textGlow {
+    0%, 100% {
+        text-shadow: 
+            0 0 5px currentColor,
+            0 0 10px currentColor,
+            0 0 15px currentColor;
+    }
+    50% {
+        text-shadow: 
+            0 0 10px currentColor,
+            0 0 20px currentColor,
+            0 0 30px currentColor,
+            0 0 40px currentColor;
+    }
+}
+
+@keyframes scanlineMove {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(100vh); }
+}
+
+@keyframes glitchShake {
+    0%, 90%, 100% { transform: translate(0); }
+    10% { transform: translate(-2px, -1px); }
+    20% { transform: translate(2px, 1px); }
+    30% { transform: translate(-1px, 2px); }
+    40% { transform: translate(1px, -1px); }
+    50% { transform: translate(-2px, 2px); }
+    60% { transform: translate(2px, -2px); }
+    70% { transform: translate(-1px, -1px); }
+    80% { transform: translate(1px, 2px); }
+}
+
+/* ================================
+   CALCULATOR NEON EFFECTS
+   ================================ */
+
+.calculator {
+    animation: neonFlicker 8s infinite;
+}
+
+.calculator::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        45deg,
+        rgba(0, 255, 255, 0.1) 0%,
+        rgba(255, 0, 255, 0.1) 25%,
+        rgba(0, 255, 0, 0.1) 50%,
+        rgba(255, 255, 0, 0.1) 75%,
+        rgba(0, 255, 255, 0.1) 100%
+    );
+    border-radius: var(--border-radius-lg);
+    opacity: 0;
+    transition: opacity var(--transition-slow);
+    pointer-events: none;
+    z-index: -1;
+}
+
+.calculator.rainbow-mode::after {
+    opacity: 0.3;
+    animation: borderGlow 3s infinite;
+}
+
+/* ================================
+   DISPLAY NEON EFFECTS
+   ================================ */
+
+.display {
+    position: relative;
+    overflow: hidden;
+}
+
+.display::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        45deg,
+        transparent 40%,
+        rgba(0, 255, 0, 0.1) 50%,
+        transparent 60%
+    );
+    transform: rotate(45deg) translateY(-100%);
+    transition: transform 0.6s ease;
+    pointer-events: none;
+}
+
+.display.calculating::before {
+    transform: rotate(45deg) translateY(100%);
+}
+
+.display-text {
+    animation: textGlow 2s ease-in-out infinite;
+}
+
+.display-text.error {
+    color: var(--accent-1);
+    text-shadow: 
+        0 0 5px var(--accent-1),
+        0 0 10px var(--accent-1),
+        0 0 15px var(--accent-1);
+    animation: glitchShake 0.5s infinite;
+}
+
+.display-text.easter-egg {
+    color: var(--neon-purple);
+    text-shadow: 
+        0 0 10px var(--neon-purple),
+        0 0 20px var(--neon-purple),
+        0 0 30px var(--neon-purple);
+}
+
+/* Scanline effect */
+.scanlines::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, 
+        transparent, 
+        var(--neon-green), 
+        transparent
+    );
+    animation: scanlineMove 3s linear infinite;
+    opacity: 0.6;
+}
+
+/* ================================
+   BUTTON NEON EFFECTS
+   ================================ */
+
+.btn {
+    position: relative;
+    overflow: hidden;
+    transition: all var(--transition-fast);
+}
+
+/* Ripple effect on click */
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.4s, height 0.4s;
+    pointer-events: none;
+}
+
+.btn.ripple::before {
+    width: 100px;
+    height: 100px;
+}
+
+/* Glow effects for different button types */
+.btn-number:hover {
+    color: var(--neon-blue);
+    text-shadow: 0 0 10px var(--neon-blue);
+    border-color: var(--neon-blue);
+}
+
+.btn-operator:hover {
+    text-shadow: 0 0 10px var(--neon-pink);
+    border-color: var(--neon-pink);
+}
+
+.btn-clear:hover {
+    text-shadow: 0 0 10px var(--accent-1);
+    border-color: var(--accent-1);
+}
+
+.btn-equals:hover {
+    text-shadow: 0 0 10px var(--neon-green);
+    border-color: var(--neon-green);
+}
+
+.btn:active {
+    animation: neonPulse 0.3s;
+}
+
+/* ================================
+   PARTICLE SYSTEM EFFECTS
+   ================================ */
+
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: var(--neon-blue);
+    border-radius: 50%;
+    pointer-events: none;
+    box-shadow: 
+        0 0 6px currentColor,
+        0 0 12px currentColor;
+}
+
+.particle.pink { 
+    background: var(--neon-pink); 
+    color: var(--neon-pink);
+}
+
+.particle.green { 
+    background: var(--neon-green); 
+    color: var(--neon-green);
+}
+
+.particle.purple { 
+    background: var(--neon-purple); 
+    color: var(--neon-purple);
+}
+
+.particle.yellow { 
+    background: #ffff00; 
+    color: #ffff00;
+}
+
+/* Particle animation */
+@keyframes particleFloat {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-200px) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+.particle {
+    animation: particleFloat 2s ease-out forwards;
+}
+
+/* ================================
+   GLITCH EFFECTS
+   ================================ */
+
+.glitch {
+    position: relative;
+    display: inline-block;
+}
+
+.glitch::before,
+.glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.glitch::before {
+    animation: glitch1 2s infinite;
+    color: var(--neon-pink);
+    z-index: -1;
+}
+
+.glitch::after {
+    animation: glitch2 2s infinite;
+    color: var(--neon-blue);
+    z-index: -2;
+}
+
+@keyframes glitch1 {
+    0%, 100% { transform: translate(0); }
+    20% { transform: translate(-2px, 2px); }
+    40% { transform: translate(-2px, -2px); }
+    60% { transform: translate(2px, 2px); }
+    80% { transform: translate(2px, -2px); }
+}
+
+@keyframes glitch2 {
+    0%, 100% { transform: translate(0); }
+    20% { transform: translate(2px, -2px); }
+    40% { transform: translate(2px, 2px); }
+    60% { transform: translate(-2px, -2px); }
+    80% { transform: translate(-2px, 2px); }
+}
+
+/* ================================
+   HOLOGRAM EFFECT
+   ================================ */
+
+.hologram {
+    background: linear-gradient(
+        180deg,
+        rgba(0, 255, 255, 0.1) 0%,
+        rgba(0, 255, 255, 0.05) 25%,
+        rgba(255, 0, 255, 0.05) 50%,
+        rgba(0, 255, 255, 0.05) 75%,
+        rgba(0, 255, 255, 0.1) 100%
+    );
+    animation: hologramFlicker 1.5s infinite;
+}
+
+@keyframes hologramFlicker {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.8; }
+}
+
+/* ================================
+   POWER-UP EFFECTS
+   ================================ */
+
+.power-up {
+    animation: powerUp 0.5s ease-out;
+}
+
+@keyframes powerUp {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 currentColor;
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 0 20px 10px rgba(255, 255, 255, 0.3);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 currentColor;
+    }
+}
+
+/* ================================
+   SCREEN FLASH EFFECT
+   ================================ */
+
+.screen-flash {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.9);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 1000;
+    transition: opacity 0.1s;
+}
+
+.screen-flash.active {
+    opacity: 1;
+}
+
+/* ================================
+   LOADING ANIMATION
+   ================================ */
+
+.loading {
+    position: relative;
+}
+
+.loading::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--neon-blue);
+    border-top: 2px solid transparent;
+    border-radius: 50%;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: translateY(-50%) rotate(0deg); }
+    100% { transform: translateY(-50%) rotate(360deg); }
+}
