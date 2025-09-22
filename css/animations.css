@@ -4,7 +4,7 @@
    ================================ */
 
 /* ================================
-   ENTRANCE ANIMATIONS
+   ENTRANCE ANIMATIONS - FIXED
    ================================ */
 
 @keyframes fadeInUp {
@@ -70,32 +70,59 @@
 }
 
 /* ================================
-   CALCULATOR ENTRANCE
+   CALCULATOR ENTRANCE - RUNS ONCE ONLY
    ================================ */
 
 .calculator-container {
+    opacity: 1; /* Always visible by default */
     animation: fadeInUp 0.8s ease-out;
+    animation-fill-mode: forwards;
 }
 
 .calculator {
-    animation: scaleIn 0.6s ease-out 0.2s both;
+    opacity: 1; /* Always visible by default */
+    transform: scale(1); /* Normal size by default */
+    animation: scaleIn 0.6s ease-out 0.2s;
+    animation-fill-mode: forwards;
 }
 
 .display-container {
-    animation: slideInFromLeft 0.5s ease-out 0.4s both;
+    opacity: 1; /* Always visible by default */
+    transform: translateX(0); /* Normal position by default */
+    animation: slideInFromLeft 0.5s ease-out 0.4s;
+    animation-fill-mode: forwards;
 }
 
 .button-grid {
-    animation: slideInFromRight 0.5s ease-out 0.6s both;
+    opacity: 1; /* Always visible by default */
+    transform: translateX(0); /* Normal position by default */
+    animation: slideInFromRight 0.5s ease-out 0.6s;
+    animation-fill-mode: forwards;
 }
 
 /* ================================
-   BUTTON ANIMATIONS
+   BUTTON ANIMATIONS - SIMPLIFIED
    ================================ */
 
 .btn {
+    opacity: 1; /* Always visible */
+    transform: scale(1); /* Normal size */
     transition: all var(--transition-fast);
     transform-origin: center;
+}
+
+/* Remove the individual button entrance animations that might be causing issues */
+.btn:nth-child(n) {
+    animation: none !important;
+}
+
+/* Keep only hover and press animations */
+.btn:hover {
+    animation: buttonHover 0.3s ease-out forwards;
+}
+
+.btn:active {
+    animation: buttonPress 0.15s ease-out;
 }
 
 /* Staggered button entrance */
@@ -533,5 +560,78 @@
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
         scroll-behavior: auto !important;
+    }
+}
+
+/* ================================
+   ENHANCED FALLING ANIMATIONS
+   ================================ */
+
+@keyframes fallDown {
+    0% { 
+        transform: translateY(-100vh);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% { 
+        transform: translateY(100vh);
+        opacity: 0;
+    }
+}
+
+@keyframes fallAndRotate {
+    0% { 
+        transform: translateY(-50px) rotate(0deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% { 
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+@keyframes fadeAndFall {
+    0% { 
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    20% {
+        opacity: 1;
+    }
+    80% {
+        opacity: 0.7;
+    }
+    100% { 
+        transform: translateY(100vh);
+        opacity: 0;
+    }
+}
+
+@keyframes slowFloat {
+    0% { 
+        transform: translateY(-50px) scale(0.5);
+        opacity: 0;
+    }
+    15% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    85% {
+        opacity: 1;
+    }
+    100% { 
+        transform: translateY(100vh) scale(0.5);
+        opacity: 0;
     }
 }

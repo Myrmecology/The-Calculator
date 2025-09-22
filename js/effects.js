@@ -59,8 +59,12 @@ class EffectsManager {
     }
     
     startBackgroundEffects() {
-        // Start floating mathematical symbols
+        // Start multiple types of falling objects
         this.startFloatingSymbols();
+        this.startDigitalRain();
+        this.startCyberpunkParticles();
+        this.startCodeFragments();
+        this.startNeonShapes();
         
         // Start subtle grid pulse
         if (this.calculator) {
@@ -310,17 +314,182 @@ class EffectsManager {
     }
     
     /* ================================
+       ENHANCED FALLING EFFECTS
+       ================================ */
+    
+    startDigitalRain() {
+        const digitalChars = '01010110100101001010101100110010101001011010101';
+        
+        setInterval(() => {
+            for (let i = 0; i < 3; i++) { // Create 3 streams at once
+                this.createDigitalStream(digitalChars);
+            }
+        }, 200);
+    }
+
+    createDigitalStream(chars) {
+        const stream = document.createElement('div');
+        stream.style.cssText = `
+            position: fixed;
+            left: ${Math.random() * window.innerWidth}px;
+            top: -20px;
+            width: 20px;
+            height: 100vh;
+            color: rgba(0, 255, 0, ${0.3 + Math.random() * 0.4});
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 20px;
+            overflow: hidden;
+            z-index: 3;
+            pointer-events: none;
+            animation: fallDown ${8 + Math.random() * 4}s linear infinite;
+        `;
+        
+        // Fill stream with random binary
+        let content = '';
+        for (let i = 0; i < 50; i++) {
+            content += chars[Math.floor(Math.random() * chars.length)] + '<br>';
+        }
+        stream.innerHTML = content;
+        
+        document.body.appendChild(stream);
+        
+        setTimeout(() => {
+            if (stream.parentNode) stream.parentNode.removeChild(stream);
+        }, 12000);
+    }
+
+    startCyberpunkParticles() {
+        setInterval(() => {
+            for (let i = 0; i < 2; i++) {
+                this.createCyberpunkParticle();
+            }
+        }, 1500);
+    }
+
+    createCyberpunkParticle() {
+        const shapes = ['●', '◆', '▲', '■', '★', '◊', '▼', '♦'];
+        const colors = [
+            'rgba(0, 255, 255, 0.6)',
+            'rgba(255, 0, 255, 0.6)', 
+            'rgba(0, 255, 0, 0.6)',
+            'rgba(255, 255, 0, 0.6)',
+            'rgba(255, 0, 0, 0.6)'
+        ];
+        
+        const particle = document.createElement('div');
+        particle.style.cssText = `
+            position: fixed;
+            left: ${Math.random() * window.innerWidth}px;
+            top: -30px;
+            font-size: ${16 + Math.random() * 20}px;
+            color: ${colors[Math.floor(Math.random() * colors.length)]};
+            text-shadow: 0 0 10px currentColor;
+            z-index: 4;
+            pointer-events: none;
+            animation: fallAndRotate ${6 + Math.random() * 4}s linear infinite;
+        `;
+        
+        particle.textContent = shapes[Math.floor(Math.random() * shapes.length)];
+        document.body.appendChild(particle);
+        
+        setTimeout(() => {
+            if (particle.parentNode) particle.parentNode.removeChild(particle);
+        }, 10000);
+    }
+
+    startCodeFragments() {
+        const codeSnippets = [
+            'function()', 'if(true)', 'while(1)', 'for(i=0)', 'return;', 'null', 'void', 
+            'class{}', 'const x', 'let y=', 'array[]', 'object{}', 'async', 'await',
+            'import', 'export', 'console.log', 'Math.PI', 'String', 'Number', 'Boolean'
+        ];
+        
+        setInterval(() => {
+            this.createCodeFragment(codeSnippets);
+        }, 2000);
+    }
+
+    createCodeFragment(snippets) {
+        const fragment = document.createElement('div');
+        fragment.style.cssText = `
+            position: fixed;
+            left: ${Math.random() * window.innerWidth}px;
+            top: -50px;
+            color: rgba(0, 255, 255, ${0.4 + Math.random() * 0.3});
+            font-family: 'Courier New', monospace;
+            font-size: ${12 + Math.random() * 6}px;
+            font-weight: bold;
+            text-shadow: 0 0 5px currentColor;
+            z-index: 3;
+            pointer-events: none;
+            animation: fadeAndFall ${10 + Math.random() * 5}s linear infinite;
+            transform: rotate(${-15 + Math.random() * 30}deg);
+        `;
+        
+        fragment.textContent = snippets[Math.floor(Math.random() * snippets.length)];
+        document.body.appendChild(fragment);
+        
+        setTimeout(() => {
+            if (fragment.parentNode) fragment.parentNode.removeChild(fragment);
+        }, 15000);
+    }
+
+    startNeonShapes() {
+        setInterval(() => {
+            this.createNeonShape();
+        }, 3000);
+    }
+
+    createNeonShape() {
+        const shapes = ['◯', '□', '△', '◇', '☆', '◎', '▢', '▽'];
+        const colors = [
+            'rgba(0, 255, 255, 0.4)',
+            'rgba(255, 0, 255, 0.4)',
+            'rgba(0, 255, 0, 0.4)',
+            'rgba(255, 100, 0, 0.4)'
+        ];
+        
+        const shape = document.createElement('div');
+        shape.style.cssText = `
+            position: fixed;
+            left: ${Math.random() * window.innerWidth}px;
+            top: -40px;
+            font-size: ${20 + Math.random() * 25}px;
+            color: ${colors[Math.floor(Math.random() * colors.length)]};
+            text-shadow: 
+                0 0 5px currentColor,
+                0 0 10px currentColor,
+                0 0 15px currentColor;
+            z-index: 2;
+            pointer-events: none;
+            animation: slowFloat ${15 + Math.random() * 10}s linear infinite;
+        `;
+        
+        shape.textContent = shapes[Math.floor(Math.random() * shapes.length)];
+        document.body.appendChild(shape);
+        
+        setTimeout(() => {
+            if (shape.parentNode) shape.parentNode.removeChild(shape);
+        }, 25000);
+    }
+    
+    /* ================================
        FLOATING BACKGROUND ELEMENTS
        ================================ */
     
     startFloatingSymbols() {
-        const symbols = ['+', '−', '×', '÷', '=', '∞', 'π', '√', '∑', '∂', '∫', '≠', '≤', '≥'];
+        const symbols = [
+            '+', '−', '×', '÷', '=', '∞', 'π', '√', '∑', '∂', '∫', '≠', '≤', '≥', 
+            '∆', 'Ω', 'α', 'β', 'γ', 'θ', 'λ', 'μ', 'σ', 'φ', 'ψ', '∈', '∉', '⊂', '⊃',
+            '∪', '∩', '∧', '∨', '¬', '⊕', '⊗', '∀', '∃', '∇', '∞', '℘', 'ℜ', 'ℑ'
+        ];
         
         setInterval(() => {
-            if (Math.random() < 0.3) { // 30% chance every interval
+            if (Math.random() < 0.9) { // 90% chance
                 this.createFloatingSymbol(symbols[Math.floor(Math.random() * symbols.length)]);
             }
-        }, 3000);
+        }, 800); // Every 0.8 seconds
     }
     
     createFloatingSymbol(symbol) {
@@ -328,7 +497,9 @@ class EffectsManager {
         element.className = 'floating-symbol';
         element.textContent = symbol;
         element.style.left = Math.random() * window.innerWidth + 'px';
-        element.style.animationDuration = (10 + Math.random() * 10) + 's';
+        element.style.fontSize = (2 + Math.random() * 2) + 'rem'; // Larger size
+        element.style.color = `rgba(0, 255, 255, ${0.3 + Math.random() * 0.4})`; // Brighter
+        element.style.animationDuration = (8 + Math.random() * 6) + 's';
         element.style.animationDelay = Math.random() * 2 + 's';
         
         document.body.appendChild(element);
@@ -338,7 +509,7 @@ class EffectsManager {
             if (element.parentNode) {
                 element.parentNode.removeChild(element);
             }
-        }, 20000);
+        }, 15000);
     }
     
     /* ================================
