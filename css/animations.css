@@ -1,0 +1,537 @@
+/* ================================
+   CYBERPUNK CALCULATOR - ANIMATIONS
+   Advanced CSS animations and micro-interactions
+   ================================ */
+
+/* ================================
+   ENTRANCE ANIMATIONS
+   ================================ */
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInFromLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-100px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInFromRight {
+    from {
+        opacity: 0;
+        transform: translateX(100px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes bounceIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.3);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.05);
+    }
+    70% {
+        transform: scale(0.9);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* ================================
+   CALCULATOR ENTRANCE
+   ================================ */
+
+.calculator-container {
+    animation: fadeInUp 0.8s ease-out;
+}
+
+.calculator {
+    animation: scaleIn 0.6s ease-out 0.2s both;
+}
+
+.display-container {
+    animation: slideInFromLeft 0.5s ease-out 0.4s both;
+}
+
+.button-grid {
+    animation: slideInFromRight 0.5s ease-out 0.6s both;
+}
+
+/* ================================
+   BUTTON ANIMATIONS
+   ================================ */
+
+.btn {
+    transition: all var(--transition-fast);
+    transform-origin: center;
+}
+
+/* Staggered button entrance */
+.btn:nth-child(1) { animation: bounceIn 0.4s ease-out 0.8s both; }
+.btn:nth-child(2) { animation: bounceIn 0.4s ease-out 0.85s both; }
+.btn:nth-child(3) { animation: bounceIn 0.4s ease-out 0.9s both; }
+.btn:nth-child(4) { animation: bounceIn 0.4s ease-out 0.95s both; }
+.btn:nth-child(5) { animation: bounceIn 0.4s ease-out 1s both; }
+.btn:nth-child(6) { animation: bounceIn 0.4s ease-out 1.05s both; }
+.btn:nth-child(7) { animation: bounceIn 0.4s ease-out 1.1s both; }
+.btn:nth-child(8) { animation: bounceIn 0.4s ease-out 1.15s both; }
+.btn:nth-child(9) { animation: bounceIn 0.4s ease-out 1.2s both; }
+.btn:nth-child(10) { animation: bounceIn 0.4s ease-out 1.25s both; }
+.btn:nth-child(11) { animation: bounceIn 0.4s ease-out 1.3s both; }
+.btn:nth-child(12) { animation: bounceIn 0.4s ease-out 1.35s both; }
+.btn:nth-child(13) { animation: bounceIn 0.4s ease-out 1.4s both; }
+.btn:nth-child(14) { animation: bounceIn 0.4s ease-out 1.45s both; }
+.btn:nth-child(15) { animation: bounceIn 0.4s ease-out 1.5s both; }
+.btn:nth-child(16) { animation: bounceIn 0.4s ease-out 1.55s both; }
+.btn:nth-child(17) { animation: bounceIn 0.4s ease-out 1.6s both; }
+.btn:nth-child(18) { animation: bounceIn 0.4s ease-out 1.65s both; }
+
+/* Button hover animations */
+@keyframes buttonHover {
+    0% {
+        transform: translateY(0) scale(1);
+    }
+    50% {
+        transform: translateY(-3px) scale(1.02);
+    }
+    100% {
+        transform: translateY(-2px) scale(1.01);
+    }
+}
+
+.btn:hover {
+    animation: buttonHover 0.3s ease-out forwards;
+}
+
+/* Button press animation */
+@keyframes buttonPress {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(0.95);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.btn:active {
+    animation: buttonPress 0.15s ease-out;
+}
+
+/* ================================
+   DISPLAY ANIMATIONS
+   ================================ */
+
+/* Number entry animation */
+@keyframes numberEntry {
+    0% {
+        transform: scale(1.1);
+        opacity: 0.7;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.display-text.entering {
+    animation: numberEntry 0.2s ease-out;
+}
+
+/* Calculation animation */
+@keyframes calculating {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(0.98);
+        opacity: 0.8;
+    }
+}
+
+.display.calculating .display-text {
+    animation: calculating 0.5s ease-in-out;
+}
+
+/* Result reveal animation */
+@keyframes resultReveal {
+    0% {
+        transform: scale(0.8) rotateX(90deg);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.05) rotateX(45deg);
+        opacity: 0.7;
+    }
+    100% {
+        transform: scale(1) rotateX(0deg);
+        opacity: 1;
+    }
+}
+
+.display-text.result {
+    animation: resultReveal 0.5s ease-out;
+}
+
+/* Error animation */
+@keyframes errorShake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-3px); }
+    20%, 40%, 60%, 80% { transform: translateX(3px); }
+}
+
+.display.error {
+    animation: errorShake 0.5s ease-in-out;
+}
+
+/* ================================
+   PARTICLE EXPLOSION ANIMATIONS
+   ================================ */
+
+@keyframes particleExplode {
+    0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(var(--random-x), var(--random-y)) scale(0);
+        opacity: 0;
+    }
+}
+
+.particle-explosion {
+    animation: particleExplode 0.8s ease-out forwards;
+}
+
+/* ================================
+   EASTER EGG ANIMATIONS
+   ================================ */
+
+/* Rainbow text animation */
+@keyframes rainbowText {
+    0% { color: #ff0000; }
+    14% { color: #ff8000; }
+    28% { color: #ffff00; }
+    42% { color: #80ff00; }
+    57% { color: #00ff80; }
+    71% { color: #0080ff; }
+    85% { color: #8000ff; }
+    100% { color: #ff0000; }
+}
+
+.rainbow-text {
+    animation: rainbowText 2s linear infinite;
+}
+
+/* Matrix rain effect */
+@keyframes matrixRain {
+    0% {
+        transform: translateY(-100vh);
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh);
+        opacity: 0;
+    }
+}
+
+.matrix-char {
+    position: fixed;
+    color: var(--neon-green);
+    font-family: var(--font-primary);
+    font-size: 14px;
+    animation: matrixRain 3s linear infinite;
+    pointer-events: none;
+    z-index: 5;
+}
+
+/* Glitch zoom effect */
+@keyframes glitchZoom {
+    0%, 100% {
+        transform: scale(1);
+    }
+    10% {
+        transform: scale(1.02) skewX(1deg);
+    }
+    20% {
+        transform: scale(0.98) skewX(-1deg);
+    }
+    30% {
+        transform: scale(1.01) skewX(0.5deg);
+    }
+    40% {
+        transform: scale(0.99) skewX(-0.5deg);
+    }
+    50% {
+        transform: scale(1.005) skewX(0.2deg);
+    }
+}
+
+.glitch-zoom {
+    animation: glitchZoom 0.3s ease-in-out;
+}
+
+/* ================================
+   SPECIAL EFFECT ANIMATIONS
+   ================================ */
+
+/* Screen distortion */
+@keyframes screenDistortion {
+    0%, 100% {
+        filter: hue-rotate(0deg) contrast(1);
+    }
+    25% {
+        filter: hue-rotate(90deg) contrast(1.2);
+    }
+    50% {
+        filter: hue-rotate(180deg) contrast(0.8);
+    }
+    75% {
+        filter: hue-rotate(270deg) contrast(1.1);
+    }
+}
+
+.screen-distortion {
+    animation: screenDistortion 1s ease-in-out;
+}
+
+/* Neon flicker burst */
+@keyframes neonBurst {
+    0% {
+        box-shadow: 0 0 5px currentColor;
+    }
+    20% {
+        box-shadow: 
+            0 0 20px currentColor,
+            0 0 40px currentColor,
+            0 0 60px currentColor;
+    }
+    40% {
+        box-shadow: 0 0 5px currentColor;
+    }
+    60% {
+        box-shadow: 
+            0 0 25px currentColor,
+            0 0 50px currentColor;
+    }
+    80% {
+        box-shadow: 0 0 5px currentColor;
+    }
+    100% {
+        box-shadow: 
+            0 0 30px currentColor,
+            0 0 60px currentColor,
+            0 0 90px currentColor;
+    }
+}
+
+.neon-burst {
+    animation: neonBurst 0.5s ease-out;
+}
+
+/* ================================
+   LOADING STATES
+   ================================ */
+
+@keyframes loadingDots {
+    0%, 20% {
+        content: '';
+    }
+    40% {
+        content: '.';
+    }
+    60% {
+        content: '..';
+    }
+    80%, 100% {
+        content: '...';
+    }
+}
+
+.loading-text::after {
+    animation: loadingDots 1.5s infinite;
+}
+
+/* ================================
+   MICRO-INTERACTIONS
+   ================================ */
+
+/* Ripple effect on button press */
+@keyframes ripple {
+    0% {
+        width: 0;
+        height: 0;
+        opacity: 1;
+    }
+    100% {
+        width: 120px;
+        height: 120px;
+        opacity: 0;
+    }
+}
+
+.btn.ripple::before {
+    animation: ripple 0.6s linear;
+}
+
+/* Number flip animation */
+@keyframes numberFlip {
+    0% {
+        transform: rotateY(0deg);
+    }
+    50% {
+        transform: rotateY(90deg);
+    }
+    100% {
+        transform: rotateY(0deg);
+    }
+}
+
+.number-flip {
+    animation: numberFlip 0.4s ease-in-out;
+}
+
+/* ================================
+   FLOATING BACKGROUND ELEMENTS
+   ================================ */
+
+@keyframes floatUp {
+    0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-100vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+.floating-symbol {
+    position: fixed;
+    font-size: 2rem;
+    color: rgba(0, 255, 255, 0.1);
+    animation: floatUp 15s linear infinite;
+    pointer-events: none;
+    z-index: 2;
+}
+
+/* ================================
+   POWER SURGE EFFECT
+   ================================ */
+
+@keyframes powerSurge {
+    0% {
+        filter: brightness(1) saturate(1);
+    }
+    50% {
+        filter: brightness(1.5) saturate(2);
+    }
+    100% {
+        filter: brightness(1) saturate(1);
+    }
+}
+
+.power-surge {
+    animation: powerSurge 0.3s ease-out;
+}
+
+/* ================================
+   CYBERPUNK GRID ANIMATION
+   ================================ */
+
+@keyframes gridPulse {
+    0%, 100% {
+        opacity: 0.03;
+    }
+    50% {
+        opacity: 0.08;
+    }
+}
+
+.background-grid {
+    animation: gridPulse 4s ease-in-out infinite;
+}
+
+/* ================================
+   PERFORMANCE OPTIMIZATIONS
+   ================================ */
+
+/* Use transform and opacity for hardware acceleration */
+.btn,
+.display-text,
+.particle,
+.easter-egg-message {
+    will-change: transform, opacity;
+}
+
+/* Ensure smooth animations on mobile */
+@media (max-width: 768px) {
+    .btn:nth-child(n) {
+        animation-duration: 0.2s;
+    }
+    
+    .calculator {
+        animation-duration: 0.4s;
+    }
+    
+    .display-container,
+    .button-grid {
+        animation-duration: 0.3s;
+    }
+}
+
+/* Respect user preferences for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
