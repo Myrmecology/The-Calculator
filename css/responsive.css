@@ -1,0 +1,485 @@
+/* ================================
+   CYBERPUNK CALCULATOR - RESPONSIVE DESIGN
+   Mobile-first responsive design with breakpoints
+   ================================ */
+
+/* ================================
+   RESPONSIVE BREAKPOINTS
+   ================================ */
+
+:root {
+    /* Mobile breakpoints */
+    --breakpoint-xs: 320px;
+    --breakpoint-sm: 480px;
+    --breakpoint-md: 768px;
+    --breakpoint-lg: 1024px;
+    --breakpoint-xl: 1200px;
+    --breakpoint-xxl: 1400px;
+}
+
+/* ================================
+   BASE MOBILE STYLES (320px+)
+   ================================ */
+
+@media (max-width: 479px) {
+    :root {
+        --calculator-width: min(340px, 95vw);
+        --button-size: 60px;
+        --display-height: 100px;
+        --spacing-sm: 0.375rem;
+        --spacing-md: 0.75rem;
+        --spacing-lg: 1rem;
+    }
+    
+    body {
+        padding: var(--spacing-sm);
+    }
+    
+    .calculator {
+        padding: var(--spacing-md);
+        border-width: 1px;
+    }
+    
+    .display-text {
+        font-size: 2rem;
+        letter-spacing: 1px;
+    }
+    
+    .display-equation {
+        font-size: 0.875rem;
+    }
+    
+    .btn {
+        font-size: 1rem;
+        height: var(--button-size);
+    }
+    
+    .button-grid {
+        gap: var(--spacing-xs);
+    }
+    
+    /* Reduce animation complexity on mobile */
+    .calculator {
+        animation: scaleIn 0.4s ease-out;
+    }
+    
+    .btn:nth-child(n) {
+        animation-duration: 0.2s;
+    }
+    
+    /* Touch-friendly interactions */
+    .btn {
+        min-height: 44px; /* iOS accessibility guideline */
+        touch-action: manipulation;
+    }
+    
+    .btn:hover {
+        transform: none; /* Disable hover effects on touch devices */
+    }
+    
+    .btn:active {
+        transform: scale(0.95);
+        transition: transform 0.1s;
+    }
+}
+
+/* ================================
+   SMALL MOBILE STYLES (480px+)
+   ================================ */
+
+@media (min-width: 480px) and (max-width: 767px) {
+    :root {
+        --calculator-width: min(380px, 90vw);
+        --button-size: 65px;
+        --display-height: 110px;
+    }
+    
+    .display-text {
+        font-size: 2.25rem;
+    }
+    
+    .btn {
+        font-size: 1.1rem;
+    }
+    
+    .easter-egg-message {
+        font-size: 1.1rem;
+        padding: var(--spacing-sm) var(--spacing-md);
+    }
+}
+
+/* ================================
+   TABLET STYLES (768px+)
+   ================================ */
+
+@media (min-width: 768px) and (max-width: 1023px) {
+    :root {
+        --calculator-width: min(420px, 85vw);
+        --button-size: 70px;
+        --display-height: 120px;
+    }
+    
+    .calculator-container {
+        padding: var(--spacing-xl);
+    }
+    
+    .display-text {
+        font-size: 2.5rem;
+    }
+    
+    .btn {
+        font-size: 1.2rem;
+    }
+    
+    /* Enhanced effects for larger screens */
+    .btn:hover {
+        transform: translateY(-2px) scale(1.02);
+    }
+    
+    .calculator::before {
+        opacity: 0.05;
+    }
+    
+    .calculator:hover::before {
+        opacity: 0.15;
+    }
+}
+
+/* ================================
+   DESKTOP STYLES (1024px+)
+   ================================ */
+
+@media (min-width: 1024px) {
+    :root {
+        --calculator-width: 450px;
+        --button-size: 75px;
+        --display-height: 130px;
+    }
+    
+    .calculator-container {
+        padding: var(--spacing-xxl);
+    }
+    
+    .calculator {
+        padding: var(--spacing-xl);
+        border-width: 3px;
+    }
+    
+    .display-text {
+        font-size: 2.75rem;
+        letter-spacing: 3px;
+    }
+    
+    .btn {
+        font-size: 1.3rem;
+    }
+    
+    /* Enhanced hover effects */
+    .btn:hover {
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: 
+            0 8px 16px rgba(0, 0, 0, 0.4),
+            0 0 20px rgba(0, 255, 255, 0.5);
+    }
+    
+    /* Floating background elements */
+    .background-grid::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: 
+            radial-gradient(circle at 25% 25%, rgba(0, 255, 255, 0.1) 0%, transparent 25%),
+            radial-gradient(circle at 75% 75%, rgba(255, 0, 255, 0.1) 0%, transparent 25%);
+        animation: floatingOrbs 20s linear infinite;
+        pointer-events: none;
+    }
+    
+    @keyframes floatingOrbs {
+        0%, 100% { transform: translate(0, 0) rotate(0deg); }
+        25% { transform: translate(50px, -30px) rotate(90deg); }
+        50% { transform: translate(-30px, 50px) rotate(180deg); }
+        75% { transform: translate(-50px, -50px) rotate(270deg); }
+    }
+}
+
+/* ================================
+   LARGE DESKTOP STYLES (1200px+)
+   ================================ */
+
+@media (min-width: 1200px) {
+    :root {
+        --calculator-width: 500px;
+        --button-size: 80px;
+        --display-height: 140px;
+    }
+    
+    .display-text {
+        font-size: 3rem;
+        letter-spacing: 4px;
+    }
+    
+    .btn {
+        font-size: 1.4rem;
+    }
+    
+    .easter-egg-message {
+        font-size: 1.4rem;
+        padding: var(--spacing-lg) var(--spacing-xl);
+    }
+    
+    /* Enhanced particle effects */
+    .particle {
+        width: 6px;
+        height: 6px;
+        box-shadow: 
+            0 0 8px currentColor,
+            0 0 16px currentColor,
+            0 0 24px currentColor;
+    }
+}
+
+/* ================================
+   ULTRA-WIDE STYLES (1400px+)
+   ================================ */
+
+@media (min-width: 1400px) {
+    .calculator-container {
+        transform: scale(1.1);
+    }
+    
+    /* Additional decorative elements for ultra-wide screens */
+    .calculator-container::before,
+    .calculator-container::after {
+        content: '';
+        position: absolute;
+        width: 200px;
+        height: 200px;
+        border: 1px solid rgba(0, 255, 255, 0.1);
+        border-radius: 50%;
+        pointer-events: none;
+    }
+    
+    .calculator-container::before {
+        top: -100px;
+        left: -100px;
+        animation: rotateClockwise 30s linear infinite;
+    }
+    
+    .calculator-container::after {
+        bottom: -100px;
+        right: -100px;
+        animation: rotateCounterClockwise 25s linear infinite;
+    }
+    
+    @keyframes rotateClockwise {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+    
+    @keyframes rotateCounterClockwise {
+        from { transform: rotate(360deg); }
+        to { transform: rotate(0deg); }
+    }
+}
+
+/* ================================
+   LANDSCAPE ORIENTATION
+   ================================ */
+
+@media (orientation: landscape) and (max-height: 600px) {
+    :root {
+        --calculator-width: min(350px, 40vw);
+        --display-height: 80px;
+        --button-size: 50px;
+    }
+    
+    .calculator-container {
+        padding: var(--spacing-sm);
+    }
+    
+    .calculator {
+        padding: var(--spacing-md);
+    }
+    
+    .display-text {
+        font-size: 1.8rem;
+    }
+    
+    .btn {
+        font-size: 0.9rem;
+    }
+    
+    /* Reduce entrance animations */
+    .calculator,
+    .display-container,
+    .button-grid {
+        animation-duration: 0.3s;
+    }
+    
+    .btn:nth-child(n) {
+        animation-duration: 0.1s;
+    }
+}
+
+/* ================================
+   HIGH DPI DISPLAYS
+   ================================ */
+
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .btn {
+        border-width: 0.5px;
+    }
+    
+    .calculator {
+        border-width: 1.5px;
+    }
+    
+    .display {
+        border-width: 0.5px;
+    }
+    
+    /* Enhance glow effects on high DPI */
+    .btn:hover {
+        box-shadow: 
+            0 6px 12px rgba(0, 0, 0, 0.4),
+            0 0 20px rgba(0, 255, 255, 0.6),
+            0 0 40px rgba(0, 255, 255, 0.3);
+    }
+}
+
+/* ================================
+   TOUCH DEVICE OPTIMIZATIONS
+   ================================ */
+
+@media (hover: none) and (pointer: coarse) {
+    /* Remove hover effects on touch devices */
+    .btn:hover {
+        transform: none;
+        box-shadow: 
+            0 4px 8px rgba(0, 0, 0, 0.3),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+    
+    .calculator:hover::before {
+        opacity: 0;
+    }
+    
+    /* Enhanced active states for touch feedback */
+    .btn:active {
+        transform: scale(0.95);
+        transition: transform 0.1s;
+    }
+    
+    /* Larger touch targets */
+    .btn {
+        min-height: 48px;
+        min-width: 48px;
+    }
+}
+
+/* ================================
+   DARK MODE SUPPORT
+   ================================ */
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg-primary: #000000;
+        --bg-secondary: #111111;
+    }
+    
+    .background-grid {
+        opacity: 0.8;
+    }
+}
+
+/* ================================
+   REDUCED MOTION ACCESSIBILITY
+   ================================ */
+
+@media (prefers-reduced-motion: reduce) {
+    .calculator,
+    .display-container,
+    .button-grid,
+    .btn {
+        animation: none !important;
+    }
+    
+    .btn:hover {
+        transition: none;
+        transform: none;
+    }
+    
+    .particle,
+    .easter-egg-message,
+    .background-grid::after {
+        animation: none !important;
+    }
+    
+    .display::before,
+    .scanlines::after {
+        animation: none !important;
+    }
+}
+
+/* ================================
+   HIGH CONTRAST MODE
+   ================================ */
+
+@media (prefers-contrast: high) {
+    :root {
+        --neon-blue: #00ffff;
+        --neon-pink: #ff00ff;
+        --neon-green: #00ff00;
+        --text-primary: #ffffff;
+        --bg-primary: #000000;
+    }
+    
+    .btn {
+        border-width: 2px;
+    }
+    
+    .calculator {
+        border-width: 3px;
+    }
+    
+    .display-text {
+        text-shadow: none;
+        font-weight: var(--font-weight-black);
+    }
+}
+
+/* ================================
+   PRINT STYLES
+   ================================ */
+
+@media print {
+    .calculator-container {
+        background: white;
+        color: black;
+        box-shadow: none;
+        border: 2px solid black;
+    }
+    
+    .btn {
+        background: white;
+        color: black;
+        border: 1px solid black;
+        box-shadow: none;
+    }
+    
+    .display {
+        background: white;
+        color: black;
+        border: 1px solid black;
+        box-shadow: none;
+    }
+    
+    .background-grid,
+    .particles-container,
+    .easter-egg-container {
+        display: none;
+    }
+}
