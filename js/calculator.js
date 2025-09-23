@@ -46,21 +46,23 @@ class CyberpunkCalculator {
     }
     
     attachEventListeners() {
-        // Number buttons
+        // Number buttons - WITH PARTICLE EXPLOSIONS
         document.querySelectorAll('[data-number]').forEach(button => {
             button.addEventListener('click', (e) => {
                 this.handleNumberInput(e.target.dataset.number);
                 this.addRippleEffect(e.target);
-                AudioManager.playSound('click');
+                this.playClickSound();
+                this.createButtonParticles(e.target);
             });
         });
         
-        // Operation buttons
+        // Operation buttons - WITH PARTICLE EXPLOSIONS  
         document.querySelectorAll('[data-action]').forEach(button => {
             button.addEventListener('click', (e) => {
                 this.handleActionInput(e.target.dataset.action);
                 this.addRippleEffect(e.target);
-                AudioManager.playSound('click');
+                this.playClickSound();
+                this.createButtonParticles(e.target);
             });
         });
         
@@ -75,6 +77,78 @@ class CyberpunkCalculator {
                 e.preventDefault();
             }
         });
+    }
+    
+    /* ================================
+       PARTICLE EFFECTS FOR BUTTONS
+       ================================ */
+    
+    createButtonParticles(button) {
+        try {
+            const rect = button.getBoundingClientRect();
+            const x = rect.left + rect.width / 2;
+            const y = rect.top + rect.height / 2;
+            
+            // Try multiple ways to create particle explosion
+            if (window.effectsManager && window.effectsManager.createParticleExplosion) {
+                window.effectsManager.createParticleExplosion(x, y);
+            } else if (typeof EffectsManager !== 'undefined' && EffectsManager.createParticleExplosion) {
+                EffectsManager.createParticleExplosion(x, y);
+            } else {
+                // Fallback: create simple particle effect
+                this.createFallbackParticles(x, y);
+            }
+        } catch (error) {
+            console.log('Particle effect not available:', error.message);
+        }
+    }
+    
+    createFallbackParticles(x, y) {
+        // Simple fallback particle effect
+        for (let i = 0; i < 5; i++) {
+            const particle = document.createElement('div');
+            particle.style.cssText = `
+                position: fixed;
+                left: ${x}px;
+                top: ${y}px;
+                width: 4px;
+                height: 4px;
+                background: #00ffff;
+                border-radius: 50%;
+                pointer-events: none;
+                z-index: 1000;
+                transition: all 0.5s ease-out;
+            `;
+            
+            document.body.appendChild(particle);
+            
+            // Animate particle
+            setTimeout(() => {
+                const angle = (i / 5) * Math.PI * 2;
+                const distance = 50 + Math.random() * 30;
+                particle.style.transform = `translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance}px)`;
+                particle.style.opacity = '0';
+            }, 10);
+            
+            // Remove particle
+            setTimeout(() => {
+                if (particle.parentNode) {
+                    particle.parentNode.removeChild(particle);
+                }
+            }, 600);
+        }
+    }
+    
+    playClickSound() {
+        try {
+            if (window.audioManager && window.audioManager.playSound) {
+                window.audioManager.playSound('click');
+            } else if (typeof AudioManager !== 'undefined' && AudioManager.playSound) {
+                AudioManager.playSound('click');
+            }
+        } catch (error) {
+            console.log('Audio not available:', error.message);
+        }
     }
     
     /* ================================
@@ -116,26 +190,16 @@ class CyberpunkCalculator {
                     this.clear();
                     break;
                 case 'equals':
-    // Handle direct number easter eggs (no operation)  
-    if (!this.state.operation && this.state.currentOperand !== '0') {
-        const currentValue = this.state.currentOperand;
-        
-        // Trigger easter egg
-        EasterEggs.checkResult(parseFloat(currentValue));
-        
-        // Force clear the calculator
-        setTimeout(() => {
-            console.log('Force clearing calculator'); // Debug log
-            this.clear(); // Use the full clear method
-            this.updateDisplay(); // Force display update
-        }, 2500);
-        
-        return; // Don't proceed with calculation
-    }
-    
-    // Normal calculation
-    this.calculate();
-    break;
+                    // Handle direct number easter eggs (no operation is pending)
+                    if (!this.state.operation && this.state.currentOperand !== '0') {
+                        const currentValue = parseFloat(this.state.currentOperand);
+                        setTimeout(() => {
+                            this.checkEasterEgg(currentValue);
+                        }, 100);
+                        return;
+                    }
+                    this.calculate();
+                    break;
                 case 'decimal':
                     this.handleNumberInput('.');
                     break;
@@ -156,6 +220,18 @@ class CyberpunkCalculator {
             }
         } catch (error) {
             this.handleError('Action input error', error);
+        }
+    }
+    
+    checkEasterEgg(value) {
+        try {
+            if (window.easterEggs && window.easterEggs.checkResult) {
+                window.easterEggs.checkResult(value);
+            } else if (typeof EasterEggs !== 'undefined' && EasterEggs.checkResult) {
+                EasterEggs.checkResult(value);
+            }
+        } catch (error) {
+            console.log('Easter eggs not available:', error.message);
         }
     }
     
@@ -232,12 +308,6 @@ class CyberpunkCalculator {
     }
     
     calculate() {
-        // Check for easter eggs on simple numbers (when no operation is pending)
-        if (!this.state.operation && this.state.currentOperand !== '0') {
-            // This handles cases where user types a number and presses equals
-            return;
-        }
-        
         if (!this.state.operation || !this.state.previousOperand) {
             return;
         }
@@ -292,12 +362,12 @@ class CyberpunkCalculator {
                 this.state.shouldResetDisplay = true;
                 
                 // Check for easter eggs with the calculated result
-                EasterEggs.checkResult(result);
+                this.checkEasterEgg(result);
                 
                 // Visual effects
                 this.addDisplayAnimation('result');
-                EffectsManager.createParticleExplosion();
-                AudioManager.playSound('equals');
+                this.createEqualsParticles();
+                this.playEqualsSound();
                 
                 this.updateDisplay();
                 this.clearEquationDisplay();
@@ -306,6 +376,29 @@ class CyberpunkCalculator {
                 this.handleError('Calculation error', error);
             }
         }, 300);
+    }
+    
+    createEqualsParticles() {
+        try {
+            const equalsButton = document.querySelector('[data-action="equals"]');
+            if (equalsButton) {
+                this.createButtonParticles(equalsButton);
+            }
+        } catch (error) {
+            console.log('Equals particles not available');
+        }
+    }
+    
+    playEqualsSound() {
+        try {
+            if (window.audioManager && window.audioManager.playSound) {
+                window.audioManager.playSound('equals');
+            } else if (typeof AudioManager !== 'undefined' && AudioManager.playSound) {
+                AudioManager.playSound('equals');
+            }
+        } catch (error) {
+            console.log('Audio not available');
+        }
     }
     
     clear() {
@@ -410,7 +503,6 @@ class CyberpunkCalculator {
         this.state.currentOperand = 'ERROR';
         this.updateDisplay();
         this.addDisplayAnimation('error');
-        AudioManager.playSound('error');
         
         // Auto-clear error after delay
         setTimeout(() => {
@@ -420,7 +512,16 @@ class CyberpunkCalculator {
     
     handleDivisionByZero() {
         // Easter egg for division by zero
-        EasterEggs.triggerDivisionByZero();
+        try {
+            if (window.easterEggs && window.easterEggs.triggerDivisionByZero) {
+                window.easterEggs.triggerDivisionByZero();
+            } else if (typeof EasterEggs !== 'undefined' && EasterEggs.triggerDivisionByZero) {
+                EasterEggs.triggerDivisionByZero();
+            }
+        } catch (error) {
+            console.log('Division by zero easter egg not available');
+        }
+        
         this.state.currentOperand = '∞';
         this.updateDisplay();
         this.addDisplayAnimation('error');
@@ -500,6 +601,7 @@ class CyberpunkCalculator {
         const button = document.querySelector(selector);
         if (button) {
             button.classList.add('power-up');
+            this.createButtonParticles(button);
             setTimeout(() => {
                 button.classList.remove('power-up');
             }, 500);
@@ -514,6 +616,7 @@ class CyberpunkCalculator {
         console.log('🚀 Cyberpunk Calculator initialized');
         console.log('📊 State:', this.state);
         console.log('🎮 Controls: Numbers, +, -, *, /, Enter, Escape');
+        console.log('🎆 Particle explosions enabled for all buttons!');
     }
     
     getState() {
@@ -537,13 +640,16 @@ class CyberpunkCalculator {
    INITIALIZE CALCULATOR
    ================================ */
 
-// Initialize when DOM is ready
+// Create calculator immediately
+window.calculator = new CyberpunkCalculator();
+
+// Backup initialization
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
-        window.calculator = CyberpunkCalculator.getInstance();
+        if (!window.calculator) {
+            window.calculator = new CyberpunkCalculator();
+        }
     });
-} else {
-    window.calculator = CyberpunkCalculator.getInstance();
 }
 
 // Export for module use
