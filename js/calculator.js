@@ -84,60 +84,63 @@ class CyberpunkCalculator {
        ================================ */
     
     createButtonParticles(button) {
-        try {
-            const rect = button.getBoundingClientRect();
-            const x = rect.left + rect.width / 2;
-            const y = rect.top + rect.height / 2;
-            
-            // Try multiple ways to create particle explosion
-            if (window.effectsManager && window.effectsManager.createParticleExplosion) {
-                window.effectsManager.createParticleExplosion(x, y);
-            } else if (typeof EffectsManager !== 'undefined' && EffectsManager.createParticleExplosion) {
-                EffectsManager.createParticleExplosion(x, y);
-            } else {
-                // Fallback: create simple particle effect
-                this.createFallbackParticles(x, y);
-            }
-        } catch (error) {
-            console.log('Particle effect not available:', error.message);
-        }
+    try {
+        const rect = button.getBoundingClientRect();
+        const x = rect.left + rect.width / 2;
+        const y = rect.top + rect.height / 2;
+        
+        // Only use our enhanced fallback particles (no screen flash)
+        this.createFallbackParticles(x, y);
+        
+        // Don't call the main effects manager for regular buttons
+        // (it includes screen flash which is too much)
+        
+    } catch (error) {
+        console.log('Particle effect not available:', error.message);
     }
+}
     
     createFallbackParticles(x, y) {
-        // Simple fallback particle effect
-        for (let i = 0; i < 5; i++) {
-            const particle = document.createElement('div');
-            particle.style.cssText = `
-                position: fixed;
-                left: ${x}px;
-                top: ${y}px;
-                width: 4px;
-                height: 4px;
-                background: #00ffff;
-                border-radius: 50%;
-                pointer-events: none;
-                z-index: 1000;
-                transition: all 0.5s ease-out;
-            `;
-            
-            document.body.appendChild(particle);
-            
-            // Animate particle
-            setTimeout(() => {
-                const angle = (i / 5) * Math.PI * 2;
-                const distance = 50 + Math.random() * 30;
-                particle.style.transform = `translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance}px)`;
-                particle.style.opacity = '0';
-            }, 10);
-            
-            // Remove particle
-            setTimeout(() => {
-                if (particle.parentNode) {
-                    particle.parentNode.removeChild(particle);
-                }
-            }, 600);
-        }
+    // Enhanced silver and gold particle effect
+    const colors = ['#C0C0C0', '#FFD700', '#E5E5E5', '#FFC107', '#DCDCDC', '#FFBF00'];
+    
+    for (let i = 0; i < 12; i++) { // More particles
+        const particle = document.createElement('div');
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        const size = 8 + Math.random() * 8; // 8-16px (much bigger)
+        
+        particle.style.cssText = `
+            position: fixed;
+            left: ${x - size/2}px;
+            top: ${y - size/2}px;
+            width: ${size}px;
+            height: ${size}px;
+            background: ${color};
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1000;
+            box-shadow: 0 0 ${size}px ${color};
+            transition: all 0.8s ease-out;
+        `;
+        
+        document.body.appendChild(particle);
+        
+        // Animate particle with bigger explosion
+        setTimeout(() => {
+            const angle = (i / 12) * Math.PI * 2;
+            const distance = 80 + Math.random() * 60; // Much bigger explosion radius
+            particle.style.transform = `translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance}px) scale(0.1)`;
+            particle.style.opacity = '0';
+        }, 10);
+        
+        // Remove particle
+        setTimeout(() => {
+            if (particle.parentNode) {
+                particle.parentNode.removeChild(particle);
+            }
+        }, 900);
     }
+}
     
     playClickSound() {
         try {
